@@ -41,11 +41,14 @@ def booking(request, court_id):
         elif request.method == "POST":
             print ('POST method to booking form')
             print (f"request.POST: {request.POST}")
+
             try:
                 member = Member.objects.get(user=request.user)
             except:
                 print (f'{request.user} is not a member')
                 pass
+            # member=10
+
             booking_form = BookingForm(request.POST)
             if booking_form.is_valid():
                 booking_form.save()
@@ -56,9 +59,9 @@ def booking(request, court_id):
                 result = 'Booking fail'
             context = {
                 'booking_form': booking_form,
-                'result': result, 
+                'result': result,
                 'member': member,
-            }    
+            }
             return render(request, 'booking_result.html', context)
         else:
             return HttpResponseBadRequest()
@@ -68,16 +71,20 @@ def my_bookings(request):
     ''' to show my booking list '''
     bookings = Booking.objects.filter(user=request.user)
     print (f'All bookings by {request.user}:')
+    # 根據用戶print出來
     for b in bookings:
         print (b)
     member = getMember(request)    
-    print ('member.firstname', member.firstname)
+    print('member.firstname', member.firstname)
     context = {'member': member,
                'bookings': bookings}
     return render(request, 'my_bookings.html', context)
 
 def getMember(request):
+    print ("--------------------------------")
     print (request.user)
+    print (Member.objects.select_related('user').all())
+
     try:
         member = Member.objects.get(user=request.user)
         print (member)

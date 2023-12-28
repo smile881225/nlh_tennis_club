@@ -11,5 +11,6 @@ class Member(models.Model):
     joined_date = models.DateField(null=True)
     age = models.IntegerField(default=20)
 
+    # 如果單純呼叫，就會回傳下面資料，django格式
     def __str__(self):
-      return f"{self.firstname} {self.lastname}"  
+      return f"{self.firstname} {self.lastname}"
